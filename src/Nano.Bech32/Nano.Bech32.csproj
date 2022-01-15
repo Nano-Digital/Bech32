@@ -11,7 +11,7 @@
         <PackageProjectUrl>https://github.com/Nano-Digital/Bech32</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Nano-Digital/Bech32</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageIconUrl>https://github.com/Nano-Digital/Bech32/blob/main/assets/icon.jpg</PackageIconUrl>
+        <PackageIcon>https://github.com/Nano-Digital/Bech32/blob/main/assets/icon.jpg</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>nano frames, cardano, ada, bech32</PackageTags>
         <PackageVersion>1.0.0</PackageVersion>
