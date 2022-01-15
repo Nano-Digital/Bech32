@@ -21,7 +21,7 @@ public class Bech32Test
             Bech32Encoder.Decode(encoded, out var hrp, out var data);
             Assert.NotNull(data);
 
-            var rebuild = Bech32Encoder.Encode(hrp, data);
+            var rebuild = Bech32Encoder.Encode(hrp!, data!);
             Assert.NotNull(rebuild);
             Assert.Equal(encoded.ToLower(), rebuild);
         }
