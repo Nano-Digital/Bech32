@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard1.2</TargetFramework>
-        <LangVersion>10</LangVersion>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Authors>Nano Digital</Authors>
         <Copyright>2022</Copyright>
         <IncludeSymbols>true</IncludeSymbols>
@@ -14,8 +15,9 @@
         <PackageIcon>assets/icon.jpg</PackageIcon>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageTags>nano frames, cardano, ada, bech32</PackageTags>
-        <PackageVersion>1.0.0</PackageVersion>
-        <Version>1.0.0</Version>
+        <PackageVersion>1.1.0</PackageVersion>
+        <Version>1.1.0</Version>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

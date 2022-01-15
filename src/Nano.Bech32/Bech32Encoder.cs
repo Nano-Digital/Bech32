@@ -1,5 +1,4 @@
-﻿using System;
-/* Copyright (c) 2017 Guillaume Bonnot and Palekhov Ilia
+﻿/* Copyright (c) 2017 Guillaume Bonnot and Palekhov Ilia
 * Based on the work of Pieter Wuille
 * Special Thanks to adiabat
 *                  
@@ -22,9 +21,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Nano.Bech32;
 
@@ -40,7 +37,7 @@ public static class Bech32Encoder
     private const string Charset = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
     // icharset is a mapping of 8-bit ascii characters to the charset positions. Both uppercase and lowercase ascii are mapped to the 5-bit position values.
-    private static readonly short[] Icharset =
+    private static readonly short[] icharset =
     {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -72,12 +69,12 @@ public static class Bech32Encoder
     }
 
     // on error, data == null
-    public static void Decode(string encoded, out string hrp, out byte[] data)
+    public static void Decode(string encoded, out string? hrp, out byte[]? data)
     {
         DecodeSquashed(encoded, out hrp, out var squashed);
-        if (squashed == null)
+        if (squashed == null!)
         {
-            data = null;
+            data = null!;
             return;
         }
 
@@ -85,13 +82,13 @@ public static class Bech32Encoder
     }
 
     // on error, data == null
-    private static void DecodeSquashed(string adr, out string hrp, out byte[] data)
+    private static void DecodeSquashed(string address, out string? hrp, out byte[]? data)
     {
-        adr = CheckAndFormat(adr);
-        if (adr == null)
+        var adr = CheckAndFormat(address);
+        if (adr == null!)
         {
-            data = null;
-            hrp = null;
+            data = null!;
+            hrp = null!;
             return;
         }
 
@@ -109,7 +106,7 @@ public static class Bech32Encoder
         hrp = adr.Substring(0, splitLoc);
 
         // get squashed data
-        var squashed = StringToSquashedBytes(adr.Substring(splitLoc + 1));
+        var squashed = StringToSquashedBytes(adr[(splitLoc + 1)..]);
         if (squashed == null)
         {
             data = null;
@@ -131,7 +128,7 @@ public static class Bech32Encoder
     }
 
     // on error, return null
-    private static string CheckAndFormat(string adr)
+    private static string? CheckAndFormat(string adr)
     {
         // make an all lowercase and all uppercase version of the input string
         var lowAdr = adr.ToLower();
@@ -157,14 +154,14 @@ public static class Bech32Encoder
     }
 
     // on error, return null
-    private static byte[] StringToSquashedBytes(string input)
+    private static byte[]? StringToSquashedBytes(string input)
     {
         var squashed = new byte[input.Length];
 
         for (var i = 0; i < input.Length; i++)
         {
             var c = input[i];
-            var buffer = Icharset[c];
+            var buffer = icharset[c];
             if (buffer == -1)
             {
                 Debug.WriteLine("contains invalid character " + c);
@@ -178,23 +175,21 @@ public static class Bech32Encoder
     }
 
     // we encode the data and the human readable prefix
-    public static string Encode(string hrp, byte[] data)
+    public static string? Encode(string hrp, byte[] data)
     {
         var base5 = Bytes8To5(data);
         return base5 == null ? string.Empty : EncodeSquashed(hrp, base5);
     }
 
     // on error, return null
-    private static string EncodeSquashed(string hrp, byte[] data)
+    private static string? EncodeSquashed(string hrp, byte[] data)
     {
         var checksum = CreateChecksum(hrp, data);
         var combined = data.Concat(checksum).ToArray();
 
         // Should be squashed, return empty string if it's not.
         var encoded = SquashedBytesToString(combined);
-        if (encoded == null)
-            return null;
-        return hrp + "1" + encoded;
+        return encoded == null ? null : hrp + "1" + encoded;
     }
 
     private static byte[] CreateChecksum(string hrp, byte[] data)
@@ -246,7 +241,7 @@ public static class Bech32Encoder
         return output;
     }
 
-    private static string SquashedBytesToString(byte[] input)
+    private static string? SquashedBytesToString(byte[] input)
     {
         var s = string.Empty;
         for (var i = 0; i < input.Length; i++)
@@ -264,22 +259,16 @@ public static class Bech32Encoder
         return s;
     }
 
-    private static byte[] Bytes8To5(byte[] data)
-    {
-        return ByteSquasher(data, 8, 5);
-    }
+    private static byte[]? Bytes8To5(byte[] data) => ByteSquasher(data, 8, 5);
 
-    private static byte[] Bytes5To8(byte[] data)
-    {
-        return ByteSquasher(data, 5, 8);
-    }
+    private static byte[]? Bytes5To8(byte[] data) => ByteSquasher(data, 5, 8);
 
     // ByteSquasher squashes full-width (8-bit) bytes into "squashed" 5-bit bytes,
     // and vice versa. It can operate on other widths but in this package only
     // goes 5 to 8 and back again. It can return null if the squashed input
     // you give it isn't actually squashed, or if there is padding (trailing q characters)
     // when going from 5 to 8
-    private static byte[] ByteSquasher(byte[] input, int inputWidth, int outputWidth)
+    private static byte[]? ByteSquasher(byte[] input, int inputWidth, int outputWidth)
     {
         var bitStash = 0;
         var accumulator = 0;
