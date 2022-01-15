@@ -3,6 +3,24 @@
     <PropertyGroup>
         <TargetFramework>netstandard1.2</TargetFramework>
         <LangVersion>10</LangVersion>
+        <Authors>Nano Digital</Authors>
+        <Copyright>2022</Copyright>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+        <PackageProjectUrl>https://github.com/Nano-Digital/Bech32</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Nano-Digital/Bech32</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageTags>nano frames, cardano, ada, bech32</PackageTags>
+        <PackageVersion>1.0.0</PackageVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
 </Project>
